@@ -22,6 +22,7 @@ Disallow: /modules/
 Disallow: /profiles/
 Disallow: /scripts/
 Disallow: /themes/
+
 # Files
 Disallow: /CHANGELOG.txt
 Disallow: /cron.php
@@ -35,6 +36,7 @@ Disallow: /MAINTAINERS.txt
 Disallow: /update.php
 Disallow: /UPGRADE.txt
 Disallow: /xmlrpc.php
+
 # Paths (clean URLs)
 Disallow: /admin/
 Disallow: /comment/reply/
@@ -49,6 +51,7 @@ Disallow: /content/
 Disallow: /node/
 Disallow: /file/
 Disallow: /taxonomy/
+
 # Paths (no clean URLs)
 Disallow: /?q=admin/
 Disallow: /?q=comment/reply/
