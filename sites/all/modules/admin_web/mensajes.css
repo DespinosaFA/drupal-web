@@ -1,0 +1,106 @@
+#better-messages-wrapper {
+	top:0!important;
+}
+
+#better-messages-wrapper #messages-inner .content > div {
+	margin-top:-10px!important;
+}
+
+h2.messages-label {
+	text-align:center!important;
+	font-size:22px!important;
+}
+
+.messages.warning,.messages.error,.messages.status {
+	background:none!important;
+	background-image:none!important;
+	border:0!important;
+	background-color:#F0C020!important;
+	text-align:center!important;
+	color:#fff!important;
+	margin:0!important;
+	padding-bottom:0;
+}
+
+.messages.error {
+	background-color:#D77!important;
+}
+
+.messages.status {
+	background-color:#7D7!important;
+}
+
+#better-messages-default .footer {
+	border:none!important;
+}
+
+#better-messages-default a.message-close {
+	background-image:url(images/closelabel.jpg)!important;
+	display:block!important;
+	padding:5px 0;
+	width:35px !important;
+	background-size:30px auto!important;
+	background-position:center center;
+	transition:ease opacity .4s;
+	opacity:.5!important;
+	float:none!important;
+	margin: auto;
+}
+
+#better-messages-default a.message-close :hover {
+	opacity:1;
+	transition:ease opacity .4s;
+}
+
+#messages-inner {
+	background-color:#fff!important;
+}
+
+#better-messages-wrapper {
+	overflow:visible;
+	position:fixed;
+	z-index:9999;
+	width:100%!important;
+	top:0;
+	border:0 none!important;
+	right:0!important;
+}
+
+#better-messages-default td {
+	display:none;
+}
+
+#better-messages-default .messages {
+	overflow:auto;
+	max-height:400px;
+	margin-bottom:5px;
+	padding:0 0 10px;
+}
+
+#better-messages-default div.error {
+	margin:0!important;
+	background:#d77 none repeat scroll 0 0;
+	color:#fff!important;
+	border:medium none!important;
+}
+
+#better-messages-default .footer {
+	margin-top:0!important;
+	padding-top:0!important;
+}
+
+#better-messages-default td.body {
+	padding:0;
+	display:block;
+}
+
+#better-messages-default .messages-label {
+	color:#FFF;
+	font-size:12px;
+	font-weight:700;
+	line-height:15px;
+	margin-bottom:0;
+	padding:15px 10px;
+	text-transform:uppercase;
+	border:none!important;
+}

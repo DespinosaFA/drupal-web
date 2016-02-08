@@ -1,0 +1,11 @@
+name = Login Web
+description = "Login personalizado"
+package = WebPro
+core = 7.x
+configure = admin/config/webpro/login
+dependencies[] = color_field
+dependencies[] = admin_web
+version = "7.x-2.0"
+
+
+

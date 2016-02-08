@@ -1,0 +1,449 @@
+<?php
+
+/**
+ * Implements hook_menu().
+ */
+function menu_web_menu() {
+
+	$items['admin/panel'] = array(
+		'title' => 'Panel de administración',
+		'page callback' => 'panel_admin',
+		'access arguments' => array('access panel administration'),
+		'type' => MENU_CALLBACK,
+	);
+
+	$items['admin/config/webpro/menu'] = array(
+		'title' => 'Menu',
+		'description' => 'Configurar el nombre de usuario.',
+		'page callback' => 'drupal_get_form',
+		'page arguments' => array('menu_web_configuracion'),
+		'access arguments' => array('administer site configuration'),
+		'file' => 'menu_web.admin.inc',
+	);
+
+	return $items;
+}
+
+/**
+ * Implementa hook_block_info().
+ */
+function menu_web_block_info() {
+
+	$blocks['administracion'] = array(
+		'info' => 'Rueda administracion',
+		'status' => 1,
+		'region' => 'header',
+		'theme' => 'webpro_star',
+		'cache' => DRUPAL_NO_CACHE,
+	);
+
+	$blocks['menu'] = array(
+		'info' => 'Menu WEB',
+		'status' => 1,
+		'region' => 'menuweb',
+		'theme' => 'adminimal',
+		'cache' => DRUPAL_NO_CACHE,
+	);
+
+	return $blocks;
+}
+
+
+/**
+ * Implementa hook_block_view().
+ */
+function menu_web_block_view($delta = '') {
+
+	global $user;
+	switch ($delta) {
+
+	case 'administracion':
+
+		if(user_access('access panel administration')){
+			$block['content'] = administracion();
+			return $block;
+		}
+
+		break;
+
+	case 'menu':
+
+		if(user_access('access panel administration')){
+			$block['content'] = menu_propietario();
+			return $block;
+		}
+		break;
+
+	}
+
+}
+
+function menu_web_init(){
+
+
+
+	$config=variable_get('menu_web');
+	$actualizar=false;
+
+	if(!empty($config)):
+
+		//Obtener version
+
+		$url_version = checkUrl('http://organizadordeproyectos.com/menuweb/version.php', '');
+
+	if (!empty($url_version)) {
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url_version);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		$version = curl_exec($ch);
+
+
+		if($version!=$config['version']){
+			$actualizar=true;
+			$config['version']=$version;
+			variable_set('menu_web',$config);
+		}
+
+	}
+
+
+	if($actualizar){
+
+		//Obtener ccs menu
+		$url_menu_css = checkUrl('http://organizadordeproyectos.com/menuweb/css/menuweb.css', '');
+		if (!empty($url_menu_css)) {
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $url_menu_css);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			$css = curl_exec($ch);
+
+			$file_css=fopen(drupal_get_path('module', 'menu_web') ."/fallback/css/menuweb.css", "w");
+			fwrite($file_css,$css);
+			fclose($file_css);
+		}
+
+
+		//Obtener ccs rueda
+		$url_rueda_css = checkUrl('http://organizadordeproyectos.com/menuweb/css/rueda.css', '');
+		if (!empty($url_rueda_css)) {
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $url_rueda_css);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch,CURLOPT_POST, 1);
+			$css = curl_exec($ch);
+
+			$file_css=fopen(drupal_get_path('module', 'menu_web') ."/fallback/css/rueda.css", "w");
+			fwrite($file_css,$css);
+			fclose($file_css);
+		}
+
+		//Obtener ccs rueda
+		$url_panel_css = checkUrl('http://organizadordeproyectos.com/menuweb/css/panel.css', '');
+		if (!empty($url_rueda_css)) {
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $url_panel_css);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch,CURLOPT_POST, 1);
+			$css = curl_exec($ch);
+
+			$file_css=fopen(drupal_get_path('module', 'menu_web') ."/fallback/css/panel.css", "w");
+			fwrite($file_css,$css);
+			fclose($file_css);
+		}
+
+		//Obtener js menu
+		$url_menu_js = checkUrl('http://organizadordeproyectos.com/menuweb/js/menu.js', '');
+		if (!empty($url_menu_js)) {
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $url_menu_js);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			$js = curl_exec($ch);
+
+			$file_js=fopen(drupal_get_path('module', 'menu_web') ."/fallback/js/menu.js", "w");
+			fwrite($file_js,$js);
+			fclose($file_js);
+		}
+
+		//Obtener js rueda
+		$url_rueda_js = checkUrl('http://organizadordeproyectos.com/menuweb/js/rueda.js', '');
+		if (!empty($url_rueda_js)) {
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $url_rueda_js);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			$js = curl_exec($ch);
+
+			$file_js=fopen(drupal_get_path('module', 'menu_web') ."/fallback/js/rueda.js", "w");
+			fwrite($file_js,$js);
+			fclose($file_js);
+		}
+
+	}
+
+	endif;
+}
+
+
+/**
+ * Callback function for menu item.
+ */
+
+
+function menu_propietario(){
+
+	//Cargar CSS y JS
+
+	$url = checkUrl('http://organizadordeproyectos.com/menuweb/css/menuweb.css', '/sites/all/modules/admin_web/modules/menu_web/fallback/css/menuweb.css');
+	drupal_add_css($url, array('type' => 'external'));
+
+	$url = checkUrl('http://organizadordeproyectos.com/menuweb/js/menu.js', '/sites/all/modules/admin_web/modules/menu_web/fallback/js/menu.js');
+	drupal_add_js($url, array('type' => 'external'));
+
+	//Variables
+
+	$config_menu=variable_get('menu_web');
+
+	if(empty($config_menu)){
+		$config_menu['version']=0;
+		$config_menu['uid']=0;
+		$config_menu['menu']="menu-factoria";
+		$config_menu['proyecto']=0;
+		variable_set('menu_web',$config);
+	}
+
+	$uid_soporte=$config_menu['uid'];
+	$dominio=$_SERVER['HTTP_HOST'];
+	$menu_name=$config_menu['menu'];
+	$proyecto=$config_menu['proyecto'];
+
+
+
+	$lista='';
+	$lista_movil='';
+
+	$sql= db_select('menu_links','m');
+	$sql->fields('m',array('link_title','link_path','plid', 'mlid'));
+	$db_and = db_and();
+	$db_and->condition('menu_name',$menu_name, '=');
+	$db_and->condition('hidden', 0, '=');
+	$db_and->condition('plid', 0, '=');
+	$sql->condition($db_and);
+	$sql->orderBy('weight', 'ASC');
+	$resul = $sql->execute();
+
+	while( $fil= $resul->fetchAssoc() )
+	{
+		$nivel1=false;
+		$sql1= db_select('menu_links','m');
+		$sql1->fields('m',array('link_title','link_path','plid', 'mlid'));
+		$db_and = db_and();
+		$db_and->condition('menu_name',$menu_name, '=');
+		$db_and->condition('hidden', 0, '=');
+		$db_and->condition('plid', $fil['mlid'], '=');
+		$sql1->condition($db_and);
+		$sql1->orderBy('weight', 'ASC');
+		$resul1 = $sql1->execute();
+		if($row = $resul1->fetchAssoc()) {
+			$nivel1=true;
+		}
+		if($nivel1==false){
+			if($fil['link_path']=='<front>'){
+				$lista.='<li><a>'.$fil['link_title'].'</a></li>';
+				$lista_movil.='<li><a>'.$fil['link_title'].'</a></li><span></span>';
+			}else{
+				$lista.='<li><a href="http://'.$dominio."/".$fil['link_path'].'">'.$fil['link_title'].'</a></li>';
+				$lista_movil.='<li><a href="http://'.$dominio."/".$fil['link_path'].'">'.$fil['link_title'].'</a></li><span></span>';
+			}
+		}
+		else
+		{
+			if($fil['link_path']=='<front>'){
+
+				$lista.='<li><a class="cuadrado">'.$fil['link_title'].'</a><ul class="sub">';
+				$lista_movil.='<li class="abre"><a class="cuadrado su">'.$fil['link_title'].'</a><span></span><ul>';
+
+			}else{
+
+				$lista.='<li><a class="cuadrado" href="http://'.$dominio."/".$fil['link_path'].'">'.$fil['link_title'].'</a><ul class="sub">';
+				$lista_movil.='<li class="abre"><a class="cuadrado su">'.$fil['link_title'].'</a><span></span><ul>';
+			}
+
+			$sql1= db_select('menu_links','m');
+			$sql1->fields('m',array('link_title','link_path','plid', 'mlid'));
+			$db_and = db_and();
+			$db_and->condition('menu_name',$menu_name, '=');
+			$db_and->condition('hidden', 0, '=');
+			$db_and->condition('plid', $fil['mlid'], '=');
+			$sql1->condition($db_and);
+			$sql1->orderBy('weight', 'ASC');
+			$resul1 = $sql1->execute();
+			while( $fil1 = $resul1->fetchAssoc() )
+			{
+				$http=strpos($fil1['link_path'], 'http://');
+				if($http===false){
+					$lista.='<li ><a href="http://'.$dominio."/".$fil1['link_path'].'">'.$fil1['link_title'].'</a></li>';
+					$lista_movil.='<li><a href="http://'.$dominio."/".$fil1['link_path'].'">'.$fil1['link_title'].'</a><span></span></li>';
+				}else{
+					$lista.='<li ><a target="_blank" href="'.$fil1['link_path'].'">'.$fil1['link_title'].'</a></li>';
+					$lista_movil.='<li><a target="_blank" href='.$fil1['link_path'].'">'.$fil1['link_title'].'</a><span></span></li>';
+				}
+			}
+
+			$lista.='</ul></li>';
+			$lista_movil.='</ul></li>';
+		}
+	}
+
+	global $user;
+
+	$fields = array(
+		'uid_soporte' => $uid_soporte,
+		'proyecto' => $proyecto,
+		'dominio' => $dominio,
+		'lista' => $lista,
+		'lista_movil' => $lista_movil
+	);
+
+
+	$fields_string="";
+
+	foreach($fields as $key=>$value) {
+		$fields_string .= $key.'='.$value.'&';
+	}
+	rtrim($fields_string, '&');
+
+	$menu='';
+	$url = checkUrl('http://organizadordeproyectos.com/menuweb/menu.php', '');
+	if (!empty($url)) {
+		$ch = curl_init();
+		$agent = 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.2 (KHTML, like Gecko) Chrome/22.0.1216.0 Safari/537.2';
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch,CURLOPT_POST, 6);
+		curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
+		$menu = curl_exec($ch);
+	}
+
+
+
+
+	return !empty($menu) ? $menu : getDefaultHtmlMenu($lista, $lista_movil, $boton_salir);
+
+
+}
+
+
+function administracion(){
+
+	$url = checkUrl('http://organizadordeproyectos.com/menuweb/css/rueda.css', '/sites/all/modules/admin_web/modules/menu_web/fallback/css/rueda.css');
+	drupal_add_css($url, array('type' => 'external'));
+
+	$url = checkUrl('http://organizadordeproyectos.com/menuweb/js/rueda.js', '/sites/all/modules/admin_web/modules/menu_web/fallback/js/rueda.js');
+	drupal_add_js($url, array('type' => 'external'));
+
+	$url = checkUrl('http://organizadordeproyectos.com/menuweb/rueda.php', '');
+	$rueda ='';
+	if (!empty($url)) {
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		$rueda = curl_exec($ch);
+	}
+	return !empty($rueda) ? $rueda : getDefaultHtmlRueda();
+
+}
+
+
+
+
+function panel_admin(){
+
+	$url = checkUrl('http://organizadordeproyectos.com/menuweb/css/panel.css', '/sites/all/modules/admin_web/modules/menu_web/fallback/css/panel.css');
+	drupal_add_css($url, array('type' => 'external'));
+
+	global $user;
+
+	$fields = array(
+		'usuario' => $user->name
+	);
+
+	$fields_string="";
+
+	foreach($fields as $key=>$value) {
+		$fields_string .= $key.'='.$value.'&';
+	}
+	rtrim($fields_string, '&');
+
+	$url = checkUrl('http://organizadordeproyectos.com/menuweb/panel.php', '');
+	$panel ='';
+	if (!empty($url)) {
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch,CURLOPT_POST, 1);
+		curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
+		$panel = curl_exec($ch);
+	}
+	return !empty($panel) ? $panel : getDefaultHtmlPanel();
+
+}
+
+function getDefaultHtmlMenu($lista, $lista_movil, $boton_salir)
+{
+	return '<div id="menu-ordenador">
+		<ul>
+			<li><a id="inicio" href="/" style="background-image: url(\'/sites/all/modules/admin_web/modules/menu_web/fallback/imagenes/home.png\');">Inicio</a></li>
+			<li><a id="administracion" style="background-image: url(\'/sites/all/modules/admin_web/modules/menu_web/fallback/imagenes/administracion.png\');">Administración</a><ul id="uladmin">'. $lista .'</ul></li>
+			<li class="salir"><a style="background-image: url(\'/sites/all/modules/admin_web/modules/menu_web/fallback/imagenes/salir.png\');" class="enlaceSalir" href="/'.$boton_salir.'">Salir</a></li>
+		</ul>
+	</div>
+	<div id="menu-movil">
+		<p>☰ Menu</p>
+		<ul id="lista">
+			<li  id="inicio"><a href="/">Inicio</a></li><span></span>
+			<li  id="administracion" ><a style="background-image: url(\'/sites/all/modules/admin_web/modules/menu_web/fallback/imagenes/administracion.png\');" data-id="administra" class="cuadrado sub">Administración</a><span></span><ul id="administra">'. $lista_movil .'</ul></li>
+			<li class="salir"><a style="background-image: url(\'/sites/all/modules/admin_web/modules/menu_web/fallback/imagenes/salir.png\');" class="enlaceSalir" href="/'.$boton_salir.'">Salir</a></li>
+		</ul>
+	</div>';
+}
+
+function getDefaultHtmlRueda()
+{
+	return '<div class="ruedaAdmin" >
+				<img class="img-btn" src="/sites/all/modules/admin_web/modules/menu_web/fallback/imagenes/btn-administracion.png" alt="" width="127" height="127" usemap="#esquina"/>
+				<map name="esquina">
+				  <area shape="poly" coords="115,2" href="#">
+				  <area shape="poly" coords="11,105" href="#">
+				  <area id="rueda" shape="poly" coords="-1,114,114,0,-1,-1" href="/admin/panel">
+				</map>
+			</div>';
+}
+
+function getDefaultHtmlPanel()
+{
+	global $user;
+	$name = !empty($user->name) ? $user->name : '';
+	return '<div class="panelAdminis">
+				<h1>Bienvenido '. $name .'.</h1>
+				<h2>Estas en el panel de administración de tu Web.</h2>
+				<img src="/sites/all/modules/admin_web/modules/menu_web/fallback/imagenes/panel.png" width="200">
+			</div>';
+}
+
+function checkUrl($file, $fallback)
+{
+	$curl = curl_init($file);
+	curl_setopt($curl, CURLOPT_NOBODY, true);
+	$result = curl_exec($curl);
+	if ($result !== false)
+	{
+		$statusCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+		if ($statusCode != 200)
+			return $fallback;
+		else
+			return $file;
+	}
+	else
+	{
+		return $fallback;
+	}
+}

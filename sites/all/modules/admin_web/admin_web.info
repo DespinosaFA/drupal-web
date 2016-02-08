@@ -1,0 +1,8 @@
+name = Administración WEB 
+description = "Administración y configuración de la web"
+package = WebPro
+core = 7.x
+version = "7.x-2.0"
+configure = admin/config/webpro
+stylesheets[all][] = admin_web.css
+scripts[] = admin_web.js

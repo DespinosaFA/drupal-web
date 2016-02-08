@@ -1,0 +1,12 @@
+.field-color .form-item.form-type-textfield{
+	text-align: center;
+}
+
+.field-color {
+    display: inline-block;
+    width: 20%;
+}
+
+#edit-login_fondo-remove-button, #edit-login_logo-remove-button{
+	top: -29px
+}

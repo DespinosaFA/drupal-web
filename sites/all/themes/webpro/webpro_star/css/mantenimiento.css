@@ -1,0 +1,30 @@
+/*Css mantenimiento*/
+
+body{
+	text-align: center;
+	padding-top: 100px;
+}
+
+h1 {
+	color: gray;
+}
+
+img.mantenimiento{
+	position: relative;
+    z-index: 2;
+    margin-top: 4px;
+}
+
+.imgMantenimiento{
+	background-color: #CCC;
+opacity: 0.5;
+display: block;
+width: 820px;
+height: 640px;
+position: absolute;
+left: 50%;
+margin-left: -410px;
+z-index: 1;
+border-radius: 30px;
+border: 4px inset;
+}

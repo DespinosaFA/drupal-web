@@ -1,0 +1,11 @@
+; $Id $
+name = KCFinder integration
+description = Integrates the KCFinder file browser into Drupal.
+core = 7.x
+configure = admin/config/content/kcfinder
+; Information added by drupal.org packaging script on 2013-09-30
+version = "7.x-1.0-beta2+1-dev"
+core = "7.x"
+project = "kcfinder"
+datestamp = "1380584328"
+

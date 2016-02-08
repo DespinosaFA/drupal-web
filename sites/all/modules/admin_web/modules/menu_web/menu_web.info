@@ -1,0 +1,7 @@
+name = Menu administración
+description = "Menu para la administración del propietario"
+package = WebPro
+dependencies[] = admin_web
+version = "7.x-4.0"
+core = 7.x
+configure = admin/config/webpro/menu

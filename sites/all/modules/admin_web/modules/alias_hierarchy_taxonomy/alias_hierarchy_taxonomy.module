@@ -1,0 +1,134 @@
+<?php
+	
+	
+	
+/**
+ * Implements hook_menu().
+ */
+function  alias_hierarchy_taxonomy_menu() {	 
+
+	
+	 
+	$items['admin/config/webpro/alias_hierarchy_taxonomy'] = array(
+    'title' => 'Alias terminos taxonomias',
+    'description' => 'Seleccionar los vocabularios.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('alias_hierarchy_taxonomy_configuracion'),
+    'access arguments' => array('administer site configuration'),
+    'file' => 'alias_hierarchy_taxonomy.admin.inc',
+	);
+   
+	
+	return $items;
+}
+
+
+
+function adminimal_form_alter(&$form, &$form_state, $form_id) {
+	
+	if(isset($form['#vocabulary']->vid) && $form_id==='taxonomy_overview_terms'){
+	
+		$vocabulario=$form['#vocabulary']->vid;
+		$vocabularios=variable_get('alias_hierarchy_taxonomy');
+				
+		if(in_array($vocabulario, $vocabularios)){
+			
+			$form['#submit'][]='alias_update';
+			$form['vid'] = array('#type' => 'hidden', '#value' => $vocabulario); 
+		}
+	
+	}
+	
+ 	
+}
+
+function alias_update(&$form,&$form_state){
+	
+	$vocabulario=$form_state['values']['vid'];
+	batch_update_taxonomy_start($vocabulario);
+
+}
+
+
+
+ /**
+ * Batch start function
+ */
+function batch_update_taxonomy_start($vocabulario) {
+
+  
+  $batch = array(
+  'title' => 'Actualizando alias taxonomias',
+  'operations' => array(
+    array('batch_update_taxonomy_alias', array($vocabulario)),
+  ),
+   'error_message' => t('¡Error!'),
+   
+);
+batch_set($batch);
+// Only needed if not inside a form _submit handler.
+// Setting redirect in batch_process.
+// batch_process('node/1');
+}
+
+function batch_update_taxonomy_alias($vocabulario, &$context) {
+	
+		
+	module_load_include('inc', 'pathauto');
+	module_load_include('inc', 'pathauto.pathauto');
+	variable_set('aux',$vocabulario);
+	
+	$tids = db_query("SELECT tid FROM {taxonomy_term_data} where vid =".$vocabulario)->fetchCol();
+	if (empty($context['sandbox'])) {
+  	  $context['sandbox']['progress'] = 0;
+  	  $context['sandbox']['current_taxonomy'] = 0;
+  	  $context['sandbox']['max'] = count($tids);
+  	}
+  	$limit = 5;
+  	
+  	$sql= db_select('taxonomy_term_data','t');		
+	$sql->fields('t',array('tid', 'name'));
+	$db_and = db_and();
+	$db_and->condition('tid', $context['sandbox']['current_taxonomy'], '>');
+	$db_and->condition('vid',$vocabulario,'=');
+	$sql->condition($db_and);					 
+	$result = $sql->execute();   
+	  foreach ($result as $row) {
+		
+		db_delete('url_alias')
+		->condition('source', 'taxonomy/term/'.$row->tid, 'LIKE')
+		->execute();
+		
+		$term=taxonomy_term_load($row->tid);
+		pathauto_taxonomy_term_update_alias($term, 'bulkupdate');		
+		
+		$context['results'][] = $row->tid . ' : ' . check_plain($row->name);
+		$context['sandbox']['progress']++;
+		$context['sandbox']['current_taxonomy'] = $row->tid;
+		$context['message'] = check_plain($row->name); 
+		
+	} 
+	
+	if ($context['sandbox']['progress'] != $context['sandbox']['max']) {
+		  $context['finished'] = $context['sandbox']['progress'] / $context['sandbox']['max'];
+	} 		
+	
+}
+
+function aliasNodo($tid){
+	
+	$nodos=taxonomy_select_nodes($tid);
+	
+	foreach($nodos as $nid){
+	
+		db_delete('url_alias')
+		->condition('source', 'node/'.$nid, 'LIKE')
+		->execute();
+		
+		$nodo=node_load($nid);
+		pathauto_node_update_alias($nodo, 'bulkupdate');	
+		
+	}	
+}
+
+

@@ -1,0 +1,41 @@
+.ruedaAdmin{
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 99;
+}
+.ruedaAdmin .img-btn{
+	left: -15px ;
+	top: -16px ;
+	transition:ease all 0.4s;
+	position: relative;
+	z-index: 10;
+}
+
+.admin-menu .ruedaAdmin .img-btn{
+	top: 11px;
+	transition:ease all 0.4s;
+}
+
+.mostrarRueda{
+	left: 0 !important;
+	top: 0 !important;
+	transition:ease all 0.4s;
+}
+
+.admin-menu .mostrarRueda{
+	top: 28px !important;
+	transition:ease all 0.4s;
+}
+	
+/*
+
+.ruedaAdmin .img-btn map:hover{
+	left: 0 !important;
+	top:0 !important;
+	transition:ease all 0.4s;
+	position: relative !important;
+
+}
+
+*/

@@ -1,0 +1,120 @@
+/*PAGINA 404**************************/
+@import url(http://fonts.googleapis.com/css?family=Raleway:300);
+body{
+	margin: 0;
+	padding: 0;
+		font-family: 'Raleway', sans-serif;
+
+}
+.pag404 {
+	width: 100%;
+	margin: auto;
+	text-align: center;
+	color: gray;
+	max-width: 940px;
+}
+.pag404 .izq {
+	display: inline-block;
+	width: 48%;
+	text-align: center;
+}
+.pag404 .izq img {
+	width: 100%;
+	max-width: 446px;
+}
+.pag404 .der {
+	width: 38%;
+	display: inline-block;
+	text-align: center;
+	vertical-align: top;
+}
+.pag404 .der img {
+	max-width: 250px;
+}
+.pag404 .der span {
+	color: #F7662D;
+	font-size: 1.5em;
+}
+.pag404 .der p{
+	margin: 0;
+
+}
+.pag404 .der a {
+	background-color: #FF6623;
+	border: 2px solid #DF5613;
+	padding: 0.5em 1em;
+	display: block;
+	color: white;
+	text-decoration: none;
+	border-radius: 10px;
+	transition: ease all 0.4s;
+	margin-bottom:2em;
+		max-width:270px;
+
+	margin:auto;
+}
+.pag404 .der a:hover {
+	transition: ease all 0.4s;
+	background-color: #DF5613;
+}
+
+@media only screen and (max-width: 768px) {
+.pag404 .izq {
+	display: inline-block;
+	width: 100%;
+}
+.pag404 .der {
+	width: 100%;
+	display: inline-block;
+}
+}
+
+.contextual-links-wrapper {
+    display: none;
+}
+
+#block-webform-client-block-6--2 {
+  background-color: #efefef;
+    max-width: 100%;
+    padding: 20px;
+    text-align: center; margin-top: 40px;
+}
+#block-webform-client-block-6--2 .gutter{
+	max-width: 900px;
+margin: 0 auto 20px;
+}
+textarea {
+    width: 90%;
+    padding: 5px;
+}
+input {
+ background-color: gray;
+    border: medium none !important;
+    border-radius: 0 0 10px 10px;
+    color: white;
+    display: block;
+    margin: 0 auto auto;
+    opacity: 0.4;
+    padding: 0.5em 1em;
+    text-decoration: none;
+    transition: all 0.4s ease 0s;
+    width: 92%;}
+input:hover {
+	transition: ease all 0.4s;
+	background-color: #DF5613;
+	opacity: 1;
+	cursor: pointer;
+}
+
+label{
+	display: none;
+}
+h2{
+	margin-bottom: 10px;
+	 color: gray;
+	 text-align:center;
+}
+
+form{
+	text-align:center;
+}

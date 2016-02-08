@@ -1,0 +1,109 @@
+@import url(http://fonts.googleapis.com/css?family=Roboto:400,700);
+
+#google_recaptcha_user_login, #google_recaptcha_user_pass{
+	margin-left: -31px;
+	
+}
+
+body{
+	font-family: 'Roboto', sans-serif !important;
+	 background-color: #efefef;
+}
+*{
+		font-family: 'Roboto', sans-serif !important;
+    -webkit-appearance: none;
+    -webkit-border-radius: 0;
+}
+
+
+/* ACCESO */
+.contenedor {
+    margin: auto;
+    width: 300px;
+    	text-align: center;
+
+}
+.logo img{
+margin: 10px 0;
+    max-height: 130px;
+    max-width: 300px;
+
+}
+.title{
+ color: white;
+    font-size: 2.3em;
+    font-weight: bold;
+    text-shadow: 0 0 5px black;
+        letter-spacing: 1px;
+}
+
+.box{
+	border-radius: 10px;
+	background-color: white;
+	box-shadow: 0px 0px 9px gray;
+	padding: 10px 20px 10px 20px;
+	color: gray;
+	margin-bottom: 25px;
+}
+.grid16-16, .nested, #block-system-main.block{
+	width: inherit !important;
+	float: none !important;
+}
+#edit-actions{
+	margin: 0;
+	padding: 0;
+}
+#edit-actions input{
+	width: 100%;
+	display: block;
+	line-height: 20px;
+	font-size: 1.5em;
+	opacity: 0.4;
+	transition:ease all 0.4s;
+	border: none;
+
+
+}
+#edit-actions input:hover{
+	opacity: 1;
+	transition:ease all 0.4s;
+}
+.enlaces{
+	margin: 15px 0 0;
+}
+.enlaces a{
+	display: block;
+	color: gray;
+	text-decoration: none;
+}
+.volver_web {
+    margin-top: 30px;
+}
+
+
+/* REGISTRO */
+.confirm-parent, .password-parent{
+	width: inherit !important;
+}
+input.password-confirm, input.password-field{
+	width: 100% !important;
+}
+.password-strength, div.password-confirm, div.form-item div.password-suggestions{
+    float: none;
+    margin-top: 1.4em;
+    width: 100%;
+    padding: 0;
+}
+label {
+    font-size: 1.2em;
+}
+
+.box input{
+	text-align: center;
+}
+
+.description{
+	display: none;
+}
+
+

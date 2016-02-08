@@ -1,0 +1,3 @@
+name = Marker
+description = "Marker para GMap"
+core = 7.x

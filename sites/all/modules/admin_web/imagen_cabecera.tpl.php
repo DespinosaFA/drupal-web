@@ -1,0 +1,1 @@
+<div class="imagen-cabecera" style="background-image: url(<?php print $url_imagen; ?>);width: 100%;height: <?php print $height; ?>px"></div>

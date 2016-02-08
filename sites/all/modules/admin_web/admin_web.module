@@ -1,0 +1,493 @@
+<?php
+
+
+/**
+ * Implements hook_menu().
+ */
+function  admin_web_menu() {
+
+	$items['noencontrado'] = array(
+		'title' => '404',
+		'page callback' => 'no_encontrado',
+		'access arguments' => array('access content'),
+		'type' => MENU_CALLBACK,
+
+	);
+
+	$items['denegado'] = array(
+		'title' => '403',
+		'page callback' => 'denegado',
+		'access arguments' => array('access content'),
+		'type' => MENU_CALLBACK,
+
+	);
+	
+	$items['admin/config/webpro'] = array(
+		'title' => 'WebPro',
+		'description' => 'Configuración de la web',
+		'page callback' => 'factoria_configuracion',
+		'access arguments' => array('administer site configuration'),
+		'file' => 'web.admin.inc',
+	);
+
+	$items['admin/config/webpro/mapa'] = array(
+		'title' => 'Mapa Web',
+		'description' => 'Configurar mapa web',
+		'page callback' => 'drupal_get_form',
+		'page arguments' => array('mapa_configuracion'),
+		'access arguments' => array('administer site configuration'),
+		'file' => 'mapa.admin.inc',
+	);
+	
+	
+	
+	$items['admin/config/webpro/redes'] = array(
+		'title' => 'Redes sociales',
+		'description' => 'Configurar redes sociales',
+		'page callback' => 'drupal_get_form',
+		'page arguments' => array('redes_configuracion'),
+		'access arguments' => array('administer reds settings'),
+		'file' => 'redes.admin.inc',
+	);
+	
+	$items['admin/config/webpro/blog'] = array(
+		'title' => 'Blog',
+		'description' => 'Configurar blog',
+		'page callback' => 'drupal_get_form',
+		'page arguments' => array('blog_configuracion'),
+		'access arguments' => array('administer site configuration'),
+		'file' => 'blog.admin.inc',
+	);
+	
+	$items['admin/config/webpro/formularios'] = array(
+		'title' => 'Formulario',
+		'description' => 'Configurar formularios',
+		'page callback' => 'drupal_get_form',
+		'page arguments' => array('formularios_configuracion'),
+		'access arguments' => array('administer forms settings'),
+		'file' => 'formu.admin.inc',
+	);
+	
+	$items['admin/config/webpro/mails'] = array(
+		'title' => 'Emails',
+		'description' => 'Configurar los emails del sistema',
+		'page callback' => 'drupal_get_form',
+		'page arguments' => array('email_configuracion'),
+		'access arguments' => array('administer mail settings'),
+		'file' => 'email.admin.inc',
+	);
+	
+	$items['admin/config/webpro/panel'] = array(
+		'title' => 'Panel de administración',
+		'description' => 'Configurar la apariencia del panel de administración',
+		'page callback' => 'drupal_get_form',
+		'page arguments' => array('panel_configuracion'),
+		'access arguments' => array('administer panel settings'),
+		'file' => 'panel.admin.inc',
+	);
+
+	return $items;
+}
+
+
+/**
+ * Implements hook_permission().
+ */
+function admin_web_permission() {
+    return array(
+            'administer reds settings' => array(
+                    'title' => 'Administrar configuración de las redes sociales',
+                    'restrict access' => true,
+            ),
+            
+            'administer forms settings' => array(
+                    'title' => 'Administrar emails de los formularios',
+                    'restrict access' => true,
+            ),
+            
+            'administer mail settings' => array(
+                    'title' => 'Administrar emails enviados por la página',
+                    'restrict access' => true,
+            ),
+            
+            'administer panel settings' => array(
+                    'title' => 'Administrar configuración del panel',
+                    'restrict access' => true,
+            ),
+            
+            'administer login settings' => array(
+                    'title' => 'Administrar configuración login',
+                    'restrict access' => true,
+            ),
+            
+            'access panel administration' => array(
+                    'title' => 'Acceso al panel de administración',
+                    'restrict access' => true,
+            )
+    );
+}
+
+
+function access_webpro()  {
+
+	global $user;
+	$roles = array ("administrator","Propietario");
+
+	foreach  ( $roles  as  $role )  {
+		if  ( in_array( $role , $user -> roles ) )  {
+			return  TRUE ;
+		}
+	}
+	return  FALSE ;
+}
+
+
+function admin_web_init(){
+	global $user;
+	
+	if($user->uid!=1){
+		drupal_add_css(drupal_get_path('module', 'admin_web') . '/mensajes.css');
+	}		
+}
+
+
+/**
+ * Implementa hook_block_info().
+ */
+function admin_web_block_info() {
+
+	$blocks['redes'] = array(
+		'info' => 'Redes',
+		'status' => 0,
+	);
+	
+	$blocks['imagen_cabecera'] = array(
+		'info' => 'Imagen de cabecera',
+		'status' => 0,
+	);
+	
+	$blocks['ubicaciones'] = array(
+		'info' => 'Ubicaciones contacto',
+		'status' => 0,
+	);
+
+
+	return $blocks;
+}
+
+
+/**
+ * Implementa hook_block_view().
+ */
+function admin_web_block_view($delta = '') {
+
+	switch ($delta) {
+
+	case 'redes':
+		$block['content'] = redes();
+		return $block;
+		break;
+	case 'imagen_cabecera':
+		$block['content'] = imagen_cabecera();
+		return $block;
+		break;		
+	case 'ubicaciones':
+		$block['content'] = ubicaciones_contacto();
+		return $block;
+		break;	
+	}
+}
+
+
+/**
+ * Implementa hook_theme().
+ */
+function admin_web_theme() {
+	$themes = array (
+		'imagen_cabecera' => array(
+			'template' => 'imagen_cabecera'
+		),
+		
+		'redes_thumb_upload' => array(
+			'render element' => 'element',
+		)
+
+	);
+	return $themes;
+}
+
+function redes(){
+	
+	$redes=variable_get('admin_web_redes');
+	$lista='<ul>';
+	
+	if(!empty($redes)){
+		foreach($redes as $red){
+			if($red['estado']==1){
+				$icono=file_load($red['logo']);
+				$url_icono=file_create_url($icono->uri);
+				$lista.='<li><a target="_blank" href="'.$red['url'].'" style="background-image:url('.$url_icono.');">'.$red['red'].'</a></li>';
+			}
+		}
+	}
+	
+	$lista.='</ul>';
+	
+	return $lista;
+}
+
+function imagen_cabecera(){
+	
+	$url_imagen="";
+	$height=0;
+	$nodo=node_load(arg(1));
+	if(isset ($nodo->field_imagen['und'][0]['uri'])){
+		$url_imagen=file_create_url($nodo->field_imagen['und'][0]['uri']);
+		$height=$nodo->field_imagen['und'][0]['height'];
+	}
+				
+		
+	$variables=array(
+		'url_imagen' => $url_imagen,
+		'height' => $height
+	);
+	
+	return theme('imagen_cabecera',$variables);
+}
+
+
+function no_encontrado(){
+
+	$noencontrado="";
+
+	return $noencontrado;
+
+}
+
+function denegado(){
+
+	$denegado="";
+
+	return $denegado;
+
+}
+
+function webpro_star_preprocess_html(&$vars) {
+
+	$ruta=current_path();
+
+	if($ruta=='noencontrado'){
+		$vars['theme_hook_suggestions'][] = 'html__404';
+	}elseif($ruta=='denegado'){
+		$vars['theme_hook_suggestions'][] = 'html__403';
+	}
+
+}
+
+
+
+
+function admin_web_views_api() {
+	return array(
+		'api' => 3,
+	);
+}
+
+function admin_web_preprocess_image(&$variables) {
+	$attributes = &$variables['attributes'];
+
+	foreach (array('height') as $key) {
+		unset($attributes[$key]);
+		unset($variables[$key]);
+	}
+}
+
+function admin_web_views_pre_build(&$view) {
+	/*
+	if ($view->name == 'productos' && $view->current_display == 'productos_categorias') {
+
+	dpm($view);
+
+	}
+	
+	*/
+}
+
+function admin_web_process_field(&$vars) {
+	
+	/*
+	$element = $vars['element'];
+
+	// Field type image
+	if ($element['#field_type'] == 'image') {
+		// Reduce number of images in teaser view mode to single image
+		if ($element['#view_mode'] == 'default') {
+			$item = reset($vars['items']);
+			$vars['items'] = array($item);
+		}
+	}
+	
+	*/
+}
+
+function ubicaciones_contacto(){
+	$nodo=node_load(4);
+	
+	$ubicaciones='<ul>';
+	if(isset ($nodo->field_ubicacion['und'][0])){
+		foreach($nodo->field_ubicacion['und'] as $ubicacion){
+			
+			$direccion=$ubicacion['street']." ".$ubicacion['postal_code']." ".$ubicacion['city'];
+			$ubicaciones.='<li><p class="title">'.$ubicacion['name'].'</p><p class="direccion">'.$direccion.'</p>';
+			
+			if(isset ($ubicacion['phone']) && $ubicacion['phone']!='')
+				$ubicaciones.='<p class="telefono">'.$ubicacion['phone'].'</p>';
+			if(isset ($ubicacion['email']) && $ubicacion['email']!='')
+				$ubicaciones.='<p class="email">'.$ubicacion['email'].'</p>';
+								
+			$ubicaciones.='</li>';
+		}
+	}
+	
+	$ubicaciones.='</ul>';
+	return $ubicaciones;
+}
+
+//HOOKS ALTER
+
+function admin_web_module_implements_alter(&$implementations, $hook) {
+	
+  if ($hook == 'form_alter' && isset($implementations['admin_web'])) {
+    $group = $implementations['admin_web'];
+    unset($implementations['admin_web']);
+    $implementations['admin_web'] = $group;
+  }
+  
+  if ($hook == 'menu_local_tasks_alter' && isset($implementations['admin_web'])) {
+    $group = $implementations['admin_web'];
+    unset($implementations['admin_web']);
+    $implementations['admin_web'] = $group;
+  }
+  
+  if ($hook == 'css_alter' && isset($implementations['admin_web'])) {
+    $group = $implementations['admin_web'];
+    unset($implementations['admin_web']);
+    $implementations['admin_web'] = $group;
+  }
+  
+  if ($hook == 'js_alter' && isset($implementations['admin_web'])) {
+    $group = $implementations['admin_web'];
+    unset($implementations['admin_web']);
+    $implementations['admin_web'] = $group;
+  }
+  
+  
+  
+}
+
+function admin_web_form_alter(&$form, $form_state, $form_id) {
+	
+	global $user;
+	$url="http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+
+	
+	//Formulario págino no encontrada
+	if ($form_id == 'webform_client_form_6') {
+		$form['submitted']['url']['#value'] = $url;
+	}	
+	//Fin formulario págino no encontrada
+	
+	//Meta Tags
+	if($user->uid && $user->uid!=0 && isset($form['metatags']['es']['advanced']))
+		$form['metatags']['es']['advanced']['#access']=false;
+		
+	if($user->uid && $user->uid!=0 && isset($form['metatags']['und']['advanced']))
+		$form['metatags']['und']['advanced']['#access']=false;
+		
+	if(isset($form['metatags']['und']['basic']['keywords']['value']['#description']))	
+		$form['metatags']['und']['basic']['keywords']['value']['#description']='Una lista separada por comas de palabras clave sobre la página. Esta etiqueta meta no es apoyada por la mayoría de los motores de búsqueda más.';
+	
+	if(isset($form['metatags']['es']['basic']['keywords']['value']['#description']))	
+		$form['metatags']['es']['basic']['keywords']['value']['#description']='Una lista separada por comas de palabras clave sobre la página. Esta etiqueta meta no es apoyada por la mayoría de los motores de búsqueda más.';
+	
+	if($user->uid && $user->uid!=0 && isset($form['metatags']['es']['basic']['#description']))
+		unset($form['metatags']['es']['basic']['#description']);
+	
+	if($user->uid && $user->uid!=0 && isset($form['metatags']['und']['basic']['#description']))
+		unset($form['metatags']['und']['basic']['#description']);	
+	//Fin Meta Tags
+	
+	//Actualizar menu administracion al cambiar permisos
+	if($form_id=='user_admin_permissions'){
+		$form['#submit'][]='update_links_menu';		
+	}	
+	//Fin actualizar menu administracion al cambiar permisos
+	
+	//dpm($form);
+	//dpm($form_state);
+	
+	
+}
+
+function admin_web_menu_local_tasks_alter(&$data, $router_item, $root_path) {
+	if(arg(2)=='edit' || arg(3)=='edit'){
+		
+		$ruta='admin/panel';
+		if(isset($_SESSION['ruta'])){
+			$ruta=$_SESSION['ruta'];
+		}
+		$data['tabs'][0]['output'][0]['#link']['href']=$ruta;
+		$data['tabs'][0]['output'][0]['#link']['title']='Volver';
+	}
+	
+	//dpm($data);
+}
+
+function admin_web_css_alter(&$css) {
+
+	//dpm($css);
+}
+
+function admin_web_js_alter(&$js) {
+
+	
+}
+
+/**
+* Implements hook_tokens().
+*/
+function admin_web_tokens($type, $tokens, array $data = array(), array $options = array()) {
+	
+	$replacements = array();
+	/*
+    if ($type == 'pedido') {     
+
+        foreach ($tokens as $name => $original) {
+            switch ($name) {
+                case 'id':
+                
+                	$aux=arg(3);
+                	
+                	if(arg(0)=='pedido'){
+						$pedido=arg(1);
+					}elseif( isset ($aux) && is_numeric($aux) ){
+						$pedido=arg(3);
+					}else{
+						$pedido=0;
+					}
+                	
+                    $replacements[$original] = $pedido;
+                    
+                    break;
+            }
+        }
+    }
+    
+    */
+
+    return $replacements;
+}
+
+
+
+include_once('funciones.inc');

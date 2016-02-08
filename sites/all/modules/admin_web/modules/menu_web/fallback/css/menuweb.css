@@ -1,0 +1,366 @@
+html body.admin-menu {
+    margin-top: 30px !important;
+}
+
+#edit-ancho {
+    text-align: right;
+}
+
+
+
+/*Menu Ordenador *******************************/
+
+#block-menu-web-menu #menu-ordenador {
+    background-color: black;
+    border-bottom: 1px solid white;
+    display: block;
+    width: 100%;
+    z-index: 999;
+}
+#branding {
+    clear: both;
+}
+
+
+#block-menu-web-menu #menu-ordenador li {
+    list-style: outside none none;
+    transition: all 0.4s ease 0s;
+}
+#block-menu-web-menu #menu-ordenador ul {
+    margin: 0 !important;
+}
+#block-menu-web-menu #menu-ordenador > ul {
+	overflow:hidden;
+}
+#block-menu-web-menu #menu-ordenador > ul ul {
+	overflow: none;
+}
+#block-menu-web-menu #menu-ordenador ul li {
+    border-bottom: 1px solid gray;
+    border-right: 1px solid gray;
+    height: 40px;
+    margin-right: -3px;
+    margin-top: 0;
+    position: relative;
+
+}
+#block-menu-web-menu #menu-ordenador ul li {
+	cursor: pointer;
+	display: inline-block;;
+}
+#block-menu-web-menu #menu-ordenador ul li ul li {
+    display: block;
+    margin: 0 !important;
+    padding: 0;
+    z-index: 999;}
+#block-menu-web-menu #menu-ordenador ul li ul li {
+	 margin-top: -4px !important;
+}
+#block-menu-web-menu #menu-ordenador ul li ul li + li{
+	 margin-top: 0 !important;
+}
+#block-menu-web-menu #menu-ordenador #uladmin > li {
+    min-width: 120px;
+}
+#block-menu-web-menu #menu-ordenador ul li a {
+    background-color: black;
+    color: #fff;
+    display: inherit;
+    height: 40px;
+    line-height: 40px !important;
+    text-decoration: none;
+}
+
+#block-menu-web-menu #menu-ordenador ul li ul li a{
+    border-bottom: 1px solid gray;
+    border-left: 1px solid gray;
+    border-right: 1px solid gray;
+    display: block;
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 100%;
+}
+#block-menu-web-menu #menu-ordenador ul ul ul {
+    display: none;
+    margin-top: -37px !important;
+    position: relative;
+    width: 100%;
+    left: 110%;
+}
+#block-menu-web-menu #menu-ordenador ul ul {
+    margin-top: 5px !important;
+    position: fixed;
+    z-index: 9999;
+    display: none;}
+#block-menu-web-menu #menu-ordenador ul ul ul li {
+ 	position: relative;
+ 	top: -4px;
+ 	margin-left: 10px !important;
+}
+
+#block-menu-web-menu #menu-ordenador ul li:hover > ul {
+    display: block;
+}
+
+#block-menu-web-menu .content #menu-ordenador > ul > li > a {
+    background-position: 5px center;
+    background-repeat: no-repeat;
+    background-size: 23px auto;
+    padding-left: 30px;
+    padding-right: 15px;
+    transition: all 0.4s ease 0s;
+ }
+
+ #block-menu-web-menu .content #menu-ordenador #inicio{
+	 background-image: url("/menuweb/imagenes/home.png");
+	 text-indent: -999px;
+	 background-position: center;
+ }
+
+ #block-menu-web-menu .content #menu-ordenador #administracion{
+	 background-image: url("/menuweb/imagenes/administracion.png");
+ }
+ #block-menu-web-menu .content #menu-ordenador #soporte{
+	 background-image: url("/menuweb/imagenes/configuracion.png");
+ }
+
+ #block-menu-web-menu .content #menu-ordenador #mejoras{
+	 background-image: url("/menuweb/imagenes/mejoras.png");
+ }
+
+
+ #block-menu-web-menu #menu-ordenador ul ul ul.sub {
+    margin-left:-4px !important;
+}
+
+
+
+#block-menu-web-menu .content #menu-ordenador > ul > li + li + li + li > a {
+    background-position: 5px center;
+    background-repeat: no-repeat;
+    background-size: 23px auto;
+    padding-left: 30px;
+    padding-right: 15px;
+}
+
+#block-menu-web-menu .content #menu-ordenador .salir{
+    float: right;
+}
+
+#block-menu-web-menu .content #menu-ordenador .salir a{
+   background-color: #950404;
+   background-image: url("/menuweb/imagenes/salir.png");
+}
+
+#block-menu-web-menu .content #menu-ordenador #salir a:hover{
+	background-color:#600404;
+}
+
+
+#block-menu-web-menu #menu-ordenador ul li a:hover, #block-menu-web-menu #menu-ordenador ul li:hover > a {
+    background-color: #ff7800;
+    transition: all 0.4s ease 0s;
+
+}
+
+#block-menu-web-menu .content #menu-ordenador > ul > li + li + li + li + li {
+    position: static;
+    margin-right: 0;
+}
+
+#block-menu-web-menu #menu-ordenador .cuadrado {
+    background-image: url("/menuweb/imagenes/cuadro.png");
+    background-position: 95% 18px;
+    background-repeat: no-repeat;
+}
+
+#block-menu-web-menu #menu-ordenador .tick {
+    /*width: 60px;*/
+}
+
+/*Menu Movil ********************************/
+
+#block-menu-web-menu #menu-movil ul {
+    margin: 0;
+}
+#block-menu-web-menu #menu-movil .cuadrado {
+    background-image: url("/menuweb/imagenes/cuadro.png");
+    background-position: 95% 15px;
+    background-repeat: no-repeat;
+}
+
+#block-menu-web-menu #menu-movil .cuadrado.su {
+    background-image: url("/menuweb/imagenes/cuadroB.png");
+}
+#block-menu-web-menu #menu-movil {
+    background-color: black;
+    border-bottom: 1px solid white;
+    display: block;
+    min-height: 31px;
+    width: 100%;
+    z-index: 999;
+}
+#block-menu-web-menu #menu-movil > p {
+    color: white;
+    cursor: pointer;
+    display: block;
+    font-size: 25px;
+    padding-top: 10px;
+    text-align: center;
+}
+#block-menu-web-menu #menu-movil li {
+    display: block;
+    font-size: 16px;
+    letter-spacing: 2px;
+    list-style: outside none none;
+    text-align: center;
+}
+#block-menu-web-menu #menu-movil span {
+    background-color: white;
+    display: block;
+    height: 1px;
+    left: 0;
+    position: absolute;
+    width: 100%;
+}
+#block-menu-web-menu #menu-movil a {
+ 	color: white;
+    display: block;
+    padding: 10px 10px 10px 35px;
+    text-align: left;
+}
+#block-menu-web-menu #menu-movil ul ul, #block-menu-web-menu #menu-movil ul ul ul {
+    display: none;
+}
+#block-menu-web-menu #menu-movil ul li ul li {
+    background-color: gray;
+}
+
+#block-menu-web-menu #menu-movil ul li ul li ul li{
+    background-color: #bdc3c5;
+}
+#block-menu-web-menu #menu-movil, #block-menu-web-menu #menu-movil > ul {
+    display: none;
+}
+
+
+#block-menu-web-menu #menu-movil a{
+	text-decoration: none !important;
+}
+
+#block-menu-web-menu #menu-movil #inicio {
+    background-image: url("/menuweb/imagenes/home.png");
+    background-position: 5px center;
+    background-repeat: no-repeat;
+    background-size: 22px auto;
+}
+#block-menu-web-menu #menu-movil #configuracion {
+    background-image: url("/menuweb/imagenes/configuracion.png");
+    background-position: 5px 8px;
+    background-repeat: no-repeat;
+    background-size: 22px auto;
+}
+
+#block-menu-web-menu #menu-movil #mejoras {
+    background-image: url("/menuweb/imagenes/mejoras.png");
+    background-position: 5px 8px;
+    background-repeat: no-repeat;
+    background-size: 22px auto;
+}
+
+#block-menu-web-menu #menu-movil #administracion {
+    background-image: url("/menuweb/imagenes/administracion.png");
+    background-position: 5px 8px;
+    background-repeat: no-repeat;
+    background-size: 22px auto;
+}
+
+#block-menu-web-menu #menu-movil .salir {
+    background-image: url("/menuweb/imagenes/salir.png");
+    background-position: 5px 8px;
+    background-repeat: no-repeat;
+    background-size: 22px auto;
+    background-color: #950404;
+}
+
+#block-menu-web-menu #menu-movil #salir:hover{
+	background-color:#600404;
+}
+
+#block-menu-web-menu #menu-movil li:hover{
+	display: block;
+	text-decoration: none !important;
+	transition:ease all 0.4s;
+	cursor: pointer;
+	background-color: #ff7800;
+
+}
+
+/*Avisos ******************/
+
+.avisonSoporte {
+  background-color: orange;
+    border-radius: 0 0 0 8px;
+    color: black;
+    display: table-cell;
+    font-size: 11px;
+    line-height: 15px;
+    position: absolute;
+    text-align: center;
+    top: 9px;
+    vertical-align: middle;
+    width: 17px;
+}
+.avisonSoporte.historial {
+    right: -21px;
+    top: -1px;
+    z-index: 999;}
+.avisonSoporte.mejoras {
+    right: 0;
+    top: -1px;
+    z-index: 999;
+}
+.avisonSoporte.configuracion {
+    right: 0;
+    top: -1px;
+    z-index: 999;
+}
+#aviTicket.avisonSoporte {
+	right: -21px;
+    top: -1px;
+    z-index: 999;
+}
+.avisonSoporteMovil {
+    background-color: orange;
+    border: 2px solid white;
+    border-radius: 8px;
+    color: black;
+    display: table-cell;
+    float: right;
+    font-size: 11px;
+    line-height: 15px;
+    margin: -27px 52px;
+    text-align: center;
+    vertical-align: middle;
+    width: 14px;
+}
+
+.avisocero{
+	background-color: #404040;
+    border-bottom: 1px solid gray;
+    border-left: 1px solid gray;
+    color: gray;
+    width: 14px;
+}
+
+.avisoceroM{
+	background-color: #404040;
+    color: gray;
+}
+
+
+
+
+
+
+

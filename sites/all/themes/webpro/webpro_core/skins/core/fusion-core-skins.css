@@ -1,0 +1,244 @@
+/* Skinr styles
+/-------------------------------------------------------------- */
+
+/* Skinr selectable helper classes */
+.fusion-clear {
+  clear: both;
+}
+
+div.webpro-right {
+  float: right; /* LTR */
+}
+
+div.webpro-center {
+  float: none;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.webpro-center-content .content {
+  text-align: center;
+}
+
+.webpro-center-content .content ul.menu {
+  display: inline-block;
+  text-align: center;
+}
+
+/* required to override drupal core */
+.webpro-center-content #user-login-form {
+  text-align: center;
+}
+
+.webpro-right-content .content {
+  text-align: right; /* LTR */
+}
+
+/* required to override drupal core */
+.webpro-right-content #user-login-form {
+  text-align: right; /* LTR */
+}
+
+/* Large, bold callout text style */
+.webpro-callout .content {
+  font-weight: bold;
+}
+
+/* Extra padding on block */
+.webpro-padding .content {
+  padding: 30px;
+}
+
+/* Adds 1px border and padding */
+.webpro-border .content {
+  border-width: 1px;
+  border-style: solid;
+  padding: 10px;
+}
+
+/* Single line menu with separators */
+.webpro-inline-menu .content ul.menu {
+  margin-left: 0; /* LTR */
+}
+
+.webpro-inline-menu .content ul.menu li {
+  border-right-style: solid;
+  border-right-width: 1px;
+  display: inline;
+  margin: 0;
+  padding: 0;
+  white-space: nowrap;
+}
+
+.webpro-inline-menu .content ul.menu li a {
+  padding: 0 8px 0 5px; /* LTR */
+}
+
+.webpro-inline-menu .content ul li.last {
+  border: none;
+}
+
+/* Hide second level (and beyond) menu items */
+.webpro-inline-menu .content ul li.expanded ul {
+  display: none;
+}
+
+/* Multi-column menu style with bolded top level menu items */
+.webpro-multicol-menu .content ul {
+  margin-left: 0; /* LTR */
+  text-align: left; /* LTR */
+}
+
+.webpro-multicol-menu .content ul li {
+  border-right: none;
+  display: block;
+  font-weight: bold;
+}
+
+.webpro-multicol-menu .content ul li.last {
+  border-right: none;
+}
+
+.webpro-multicol-menu .content ul li.last a {
+  padding-right: 0; /* LTR */
+}
+
+.webpro-multicol-menu .content ul li.expanded,
+.webpro-multicol-menu .content ul li.leaf {
+  float: left; /* LTR */
+  list-style-image: none;
+  margin-left: 50px; /* LTR */
+}
+
+.webpro-multicol-menu .content ul.menu li.first {
+  margin-left: 0; /* LTR */
+}
+
+.webpro-multicol-menu .content ul li.expanded li.leaf {
+  float: none;
+  margin-left: 0; /* LTR */
+}
+
+.webpro-multicol-menu .content ul li.expanded ul {
+  display: block;
+  margin-left: 0; /* LTR */
+}
+
+.webpro-multicol-menu .content ul li.expanded ul li {
+  border: none;
+  margin-left: 0; /* LTR */
+  text-align: left; /* LTR */
+}
+
+.webpro-multicol-menu .content ul.menu li ul.menu li {
+  font-weight: normal;
+}
+
+/* Split list across multiple columns */
+.webpro-2-col-list .content .item-list ul li,
+.webpro-2-col-list .content ul.menu li {
+  float: left; /* LTR */
+  width: 50%;
+}
+
+.webpro-3-col-list .content .item-list ul li,
+.webpro-3-col-list .content ul.menu li {
+  float: left; /* LTR */
+  width: 33%;
+}
+
+.webpro-2-col-list .content .item-list ul.pager li,
+.webpro-3-col-list .content .item-list ul.pager li {
+  float: none;
+  width: auto;
+}
+
+/* List with bottom border
+    Fixes a common issue when list items have bottom borders and appear to be
+    doubled when nested lists end and begin. This removes the extra border-bottom
+ */
+.webpro-list-bottom-border .content ul li {
+  list-style: none;
+  list-style-type: none;
+  list-style-image: none;
+}
+
+.webpro-list-bottom-border .content ul li,
+.webpro-list-bottom-border .view-content div.views-row {
+  padding: 0 0 0 10px; /* LTR */
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  line-height: 216.7%; /* 26px */
+}
+
+.webpro-list-bottom-border .content ul {
+  margin: 0;
+}
+
+.webpro-list-bottom-border .content ul li ul {
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+}
+
+.webpro-list-bottom-border .content ul li ul li.last {
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  margin-bottom: -1px;
+  margin-top: -1px;
+}
+
+/* List with no bullet and extra padding
+    This is a common style for menus, which removes the bullet and adds more
+    vertical padding for a simple list style
+ */
+.webpro-list-vertical-spacing .content ul,
+.webpro-list-vertical-spacing div.views-row-first {
+  margin-left: 0;
+  margin-top: 10px;
+}
+
+.webpro-list-vertical-spacing .content ul li,
+.webpro-list-vertical-spacing div.views-row {
+  line-height: 133.3%; /* 16px/12px */
+  margin-bottom: 10px;
+  padding: 0;
+}
+
+.webpro-list-vertical-spacing .content ul li {
+  list-style: none;
+  list-style-image: none;
+  list-style-type: none;
+}
+
+.webpro-list-vertical-spacing .content ul li ul {
+  margin-left: 10px; /* LTR */
+}
+
+/* Bold all links */
+.webpro-bold-links .content a {
+  font-weight: bold;
+}
+
+/* Float imagefield images left and add margin */
+.webpro-float-imagefield-left .field-type-image,
+.webpro-float-imagefield-left .image-insert {
+  float: left; /* LTR */
+  margin: 0 15px 15px 0; /* LTR */
+}
+
+/* Clear float on new Views item so each row drops to a new line */
+.webpro-float-imagefield-left .views-row {
+  clear: left; /* LTR */
+}
+
+/* Float imagefield images right and add margin */
+.webpro-float-imagefield-right .field-type-image,
+.webpro-float-imagefield-right .image-insert {
+  float: right; /* LTR */
+  margin: 0 0 15px 15px; /* LTR */
+}
+
+/* Clear float on new Views item so each row drops to a new line */
+.webpro-float-imagefield-right .views-row {
+  clear: right; /* LTR */
+}

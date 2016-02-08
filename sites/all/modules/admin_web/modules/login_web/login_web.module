@@ -1,0 +1,218 @@
+<?php
+	
+	
+/**
+ * Implements hook_menu().
+ */
+function  login_web_menu() {
+
+	$items['admin/config/webpro/login'] = array(
+		'title' => 'Login',
+		'description' => 'Configurar página de login',
+		'page callback' => 'drupal_get_form',
+		'page arguments' => array('login_configuracion'),
+		'access arguments' => array('administer login settings'),
+		'file' => 'login.admin.inc',
+	);
+
+	return $items;
+}
+
+
+/**
+ * Implements hook_theme().
+ */
+function login_web_theme() {
+	return array(
+		'login_thumb_upload' => array(
+			'render element' => 'element',
+		)
+	);
+}
+
+
+/**
+ * Implementation of hook_init().
+ */
+function login_web_init() {
+	// Make sure that the user is not logged in.
+	global $user;	
+
+	if (!$user->uid && arg(0)=='user') {
+		
+		$destination = '';
+		if (isset($_GET['destination'])) {
+			$destination = drupal_get_destination();
+		}
+		
+		
+		drupal_add_css(drupal_get_path('module', 'login_web') . '/css/login_web.css'); 	 
+		drupal_add_js(drupal_get_path('module', 'login_web') . '/js/jquery.backstretch.min.js'); 
+		drupal_add_js(drupal_get_path('module', 'login_web') . '/js/login_web.js'); 
+		
+		$login=variable_get('login_web');
+			
+		$fondo='';
+		if($login['fondo']>0){
+			$file_fondo= file_load($login['fondo']);
+			$fondo=file_create_url($file_fondo->uri);
+		}
+		
+		$logo='';
+		if($login['logo']>0){
+			$file_logo= file_load($login['logo']);
+			$logo=file_create_url($file_logo->uri);
+		}
+		
+		$color_titulo='';
+		$color_textos='';
+		$color_caja='';
+			
+		if(	$login['color_titulo']['rgb']!='')
+			$color_titulo=hex2rgb($login['color_titulo']['rgb'], $login['color_titulo']['opacity']);
+		if(	$login['color_textos']['rgb']!='')
+			$color_textos=hex2rgb($login['color_textos']['rgb'], $login['color_textos']['opacity']);
+		if(	$login['color_fondo']['rgb']!='')
+			$color_caja=hex2rgb($login['color_fondo']['rgb'], $login['color_fondo']['opacity']);
+		
+		$variables = array(
+					'fondo'=>$fondo, 
+					'color_titulo'=>$color_titulo,
+					'color_textos'=>$color_textos,
+					'color_caja'=>$color_caja,
+					'logo'=>$logo,
+					);
+		
+		drupal_add_js(array('login_web'=> $variables), 'setting');
+		drupal_add_js(drupal_get_path('module', 'login_web') . '/js/login_web.js');
+		
+		// Make sure that anon users cannot go to just /user but directly to the login form.
+		if (!arg(1) && php_sapi_name() !== 'cli') {
+			if (isset($destination)) {
+				unset($_GET['destination']);
+			}
+
+			drupal_goto('user/login', array('query' => $destination));
+		}
+	}
+}
+
+function login_web_css_alter(&$css) {
+
+	$ruta=current_path();
+	global $user;
+	if(!$user->uid){
+		if(arg(0,$ruta)=='user'){
+			unset($css['sites/all/themes/webpro/webpro_star/css/global.css']);
+		}
+	}
+}
+
+function login_web_js_alter(&$js) {
+
+	$ruta=current_path();
+	global $user;
+	if(!$user->uid){
+		if(arg(0,$ruta)=='user'){
+			unset($js['sites/all/themes/webpro/webpro_core/js/script.js']);
+		}
+	}
+}
+
+/**
+ * Implementation of hook_form_alter().
+ *
+ * Autofocus on the username field.
+ * Some proper page titles would be nice for a change.. User account is a bit boring..
+ */
+function login_web_form_alter(&$form, &$form_state, $form_id) {
+	// Autofocus on the username field.
+	// And add some pretty CSS :).
+	// And a few other things too...
+
+
+
+
+	if ($form_id == 'user_login' || $form_id == 'user_register_form' || $form_id == 'user_pass' || $form_id == 'user_pass_reset') {
+		$form['name']['#attributes']['autofocus'] = 'autofocus';
+
+		// We don't really need descriptions to tell us what we already know...
+		unset($form['name']['#description']);
+		unset($form['pass']['#description']);
+
+		// Add in some CSS.
+		$form['#attached']['css'][] = drupal_get_path('module', 'login_web') .'/css/login_web.css';
+	}
+
+	switch ($form_id) {
+	case 'user_login':
+		drupal_set_title(t('Login'));
+		break;
+
+	case 'user_register_form':
+		drupal_set_title(t('Register'));
+
+		// The registration form behaves differently...
+		$form['account']['name']['#attributes']['autofocus'] = 'autofocus';
+		break;
+
+	case 'user_pass':
+		drupal_set_title(t('Forgot your password?'));
+		break;
+
+	case 'user_pass_reset':
+		drupal_set_title(t('Reset password'));
+		break;
+	}
+}
+
+/**
+ * Implementation of hook_theme_registry_alter().
+ */
+function login_web_theme_registry_alter(&$theme_registry) {
+	$mod_path = drupal_get_path('module', 'login_web');
+
+	$theme_registry_copy = $theme_registry;
+	_theme_process_registry($theme_registry_copy, 'phptemplate', 'theme_engine','', $mod_path);
+	$theme_registry += array_diff_key($theme_registry_copy, $theme_registry);
+
+	$hooks = array('page');
+	foreach ($hooks as $h) {
+		if (!isset($theme_registry[$h]['theme paths'])) {
+			$theme_registry[$h]['theme paths'] = array();
+		}
+
+		_login_web_insert_after_first_element($theme_registry[$h]['theme paths'], $mod_path);
+	}
+}
+
+function _login_web_insert_after_first_element(&$a, $element) {
+	if(is_array($a)) {
+		$first_element = array_shift($a);
+		if ($first_element) {
+			array_unshift($a, $first_element, $element);
+		}
+		else {
+			array_unshift($a, $element);
+		}
+	}
+}
+
+
+function hex2rgb($hex, $opacity) {
+	$hex = str_replace("#", "", $hex);
+
+	if(strlen($hex) == 3) {
+		$r = hexdec(substr($hex,0,1).substr($hex,0,1));
+		$g = hexdec(substr($hex,1,1).substr($hex,1,1));
+		$b = hexdec(substr($hex,2,1).substr($hex,2,1));
+	} else {
+		$r = hexdec(substr($hex,0,2));
+		$g = hexdec(substr($hex,2,2));
+		$b = hexdec(substr($hex,4,2));
+	}
+	$rgb = array($r, $g, $b,$opacity);
+
+	return 'rgba(' . implode(",", $rgb).')';
+}
+

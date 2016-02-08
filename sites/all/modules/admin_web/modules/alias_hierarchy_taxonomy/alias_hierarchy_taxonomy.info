@@ -1,0 +1,10 @@
+name = Alias hierarchy taxonomy
+description = "Actualiza alias de terminos al cambiar orden"
+package = WebPro
+version = "7.x-2.0"
+core = 7.x
+dependencies[] = pathauto
+dependencies[] = taxonomy
+dependencies[] = admin_web
+configure = admin/config/webpro/panel
+stylesheets[all][] = menu_factoria.css

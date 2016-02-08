@@ -1,0 +1,64 @@
+<?php
+
+
+/**
+ * Implement hook_enable()
+ */
+function admin_web_enable() {	
+	
+	$item = array(
+		'link_path' => 'admin/config/webpro/redes',
+		'link_title' => 'Redes sociales',
+		'menu_name' => 'menu-administracion',
+		'expanded' => 0,
+	);
+	
+	if(!checkLink('admin/config/webpro/redes'))
+		menu_link_save($item);
+	
+	$item = array(
+		'link_path' => 'admin/config/webpro/formularios',
+		'link_title' => 'Formularios',
+		'menu_name' => 'menu-administracion',
+		'expanded' => 0,
+	);
+	
+	if(!checkLink('admin/config/webpro/formularios'))
+		menu_link_save($item);
+	
+	$item = array(
+		'link_path' => 'admin/config/webpro/mails',
+		'link_title' => 'Emails',
+		'menu_name' => 'menu-administracion',
+		'expanded' => 0,
+	);
+	
+	if(!checkLink('admin/config/webpro/mails'))
+		menu_link_save($item);
+	
+	$item = array(
+		'link_path' => 'admin/config/webpro/panel',
+		'link_title' => 'Panel',
+		'menu_name' => 'menu-administracion',
+		'expanded' => 0,
+	);
+	
+	if(!checkLink('admin/config/webpro/panel'))
+		menu_link_save($item);
+
+}
+
+function admin_web_unistall() {
+	$path = 'admin/config/webpro/redes';
+	menu_link_delete(NULL, $path);
+	
+	$path = 'admin/config/webpro/formularios';
+	menu_link_delete(NULL, $path);
+	
+	$path = 'admin/config/webpro/mails';
+	menu_link_delete(NULL, $path);
+	
+	$path = 'admin/config/webpro/panel';
+	menu_link_delete(NULL, $path);
+}
+

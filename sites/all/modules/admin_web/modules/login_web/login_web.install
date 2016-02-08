@@ -1,0 +1,52 @@
+<?php
+
+
+/**
+ * Implementación de hook_install()
+ */
+
+function login_web_install() {
+
+	$login=array();
+	$login['logo']=0;		
+	$login['fondo']=0;
+	$login['color_titulo']='';
+	$login['color_textos']='';
+	$login['color_fondo_caja']='';	
+	variable_set('login_web',$login);
+
+}
+
+
+
+/**
+ * Implement hook_enable()
+ */
+function login_web_enable() {
+        
+    $item = array(
+        'link_path' => 'admin/config/webpro/login',
+        'link_title' => 'Formulario login',
+        'menu_name' => 'menu-administracion',
+        'weight' => 10,
+        'expanded' => 0,
+      );
+      
+    if(!checkLink('admin/config/webpro/login'))
+    	menu_link_save($item);
+
+}
+
+
+
+/**
+ * Implementación de hook_unistall()
+ */
+
+function login_web_uninstall() {
+    
+    variable_del('login_web');
+    
+    $path = 'admin/config/webpro/login';
+	menu_link_delete(NULL, $path);
+}

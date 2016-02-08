@@ -1,0 +1,34 @@
+/*Administración redes************************************************/
+
+.page-admin-config-webpro-redes .two-col > div {
+    display: table-cell;
+}
+
+.page-admin-config-webpro-redes .delete-red .form-type-checkbox{
+	position: absolute;
+	margin-top: 14px;
+}
+
+.page-admin-config-webpro-redes .estado-red {
+    position: relative;
+    top: 30px;
+    left: -9px;
+}
+
+.btnDelete {
+    font-size: 9px !important;
+    padding: 3px 5px !important;
+}
+
+.page-admin-config-webpro-mails .filter-wrapper, .page-admin-config-webpro-mails .ckeditor_links{
+	display: none !important;
+}
+
+/*Fin Administracion Redes***********************************************/
+
+
+/*Administración panel************************************************/
+.page-admin-config-webpro-panel .field-color {
+    display: inline-block;
+    text-align: center;
+}
